@@ -71,7 +71,7 @@ class Crud_model{
         try {
             $stmt = $this->pdo->prepare($sql);
             if ($stmt->execute([$data->FirstName, $data->LastName, $isAdmin])) {
-                $lastInsertedId = $this->pdo->lastInsertId(); // Get the last inserted ID
+                $lastInsertedId = $this->pdo->lastInsertId(); 
                 
                 $fetchSql = "SELECT * FROM users WHERE User_ID = ?";
                 $fetchStmt = $this->pdo->prepare($fetchSql);
