@@ -57,11 +57,11 @@ class Crud_model{
 //INSERT
     public function insert($data) {
         if (!isset($data->FirstName) || !isset($data->LastName)) {
-            return ["status" => "error", "message" => "FirstName and LastName are required fields."];
+            return ["status" => "error", "message" => "FirstName and LastName are kailangan na fields."];
         }
     
         if (empty($data->FirstName) || empty($data->LastName)) {
-            return ["status" => "error", "message" => "FirstName and LastName cannot be empty."];
+            return ["status" => "error", "message" => "FirstName and LastName ay bawal empty."];
         }
     
         $isAdmin = isset($data->is_Admin) ? $data->is_Admin : 0;
@@ -72,24 +72,24 @@ class Crud_model{
             $stmt = $this->pdo->prepare($sql);
             if ($stmt->execute([$data->FirstName, $data->LastName, $isAdmin])) {
                 $lastInsertedId = $this->pdo->lastInsertId(); 
-                
+             
                 $fetchSql = "SELECT * FROM users WHERE User_ID = ?";
                 $fetchStmt = $this->pdo->prepare($fetchSql);
                 if ($fetchStmt->execute([$lastInsertedId])) {
                     $insertedData = $fetchStmt->fetch();
                     return [
                         "status" => "success",
-                        "message" => "Data successfully inserted.",
+                        "message" => "Data ay matagumpay na nailagay.",
                         "data" => $insertedData
                     ];
                 } else {
                     return [
                         "status" => "error",
-                        "message" => "Failed to retrieve inserted data."
+                        "message" => "Failed to retrieve ang nilagay na data."
                     ];
                 }
             } else {
-                return ["status" => "error", "message" => "Data unsuccessfully inserted."];
+                return ["status" => "error", "message" => "Ang data ay hindi matagumpay na nailagay."];
             }
         } catch (PDOException $e) {
             return ["status" => "error", "message" => $e->getMessage()];
@@ -99,7 +99,7 @@ class Crud_model{
 //UPDATE
     public function update($data) {
         if (!isset($data->User_ID)) {
-            return ["status" => "error", "message" => "User_ID is required."];
+            return ["status" => "error", "message" => "User_ID ay required."];
         }
     
         $sql = "UPDATE users SET is_Admin = CASE WHEN is_Admin = 0 THEN 1 WHEN is_Admin = 1 THEN 0 END WHERE User_ID = ?";
@@ -114,23 +114,23 @@ class Crud_model{
                         $updatedData = $updatedStmt->fetch();
                         return [
                             "status" => "success",
-                            "message" => "Data successfully updated.",
+                            "message" => "Data ay matagumpay na updated.",
                             "data" => $updatedData
                         ];
                     } else {
                         return [
                             "status" => "error",
-                            "message" => "Failed to retrieve updated data."
+                            "message" => "Hindi matagumpay ang pagkuha ng data."
                         ];
                     }
                 } else {
                     return [
                         "status" => "error",
-                        "message" => "No changes made or user not found."
+                        "message" => "Walang pagbabago na ginawa at ang user ay wala."
                     ];
                 }
             } else {
-                return ["status" => "error", "message" => "Data update failed."];
+                return ["status" => "error", "message" => "Hindi matagumpay ang update sa data."];
             }
         } catch (PDOException $e) {
             return ["status" => "error", "message" => $e->getMessage()];
@@ -145,10 +145,10 @@ public function delete($data) {
         $stmt = $this-> pdo->prepare($sql);
         if ($stmt->execute([$data->User_ID])) {
             if ($stmt->rowCount() > 0) {
-                echo json_encode(value: ["message"=>"User successfully deleted"]);
+                echo json_encode(value: ["message"=>"Ang user ay matagumpay na deleted"]);
             } else {
                 http_response_code(response_code: 404);
-                echo json_encode(value: ["message"=>"User doesn't exist or is already deleted"]);
+                echo json_encode(value: ["message"=>"Ang user ay wala o ito ay deleted na"]);
             }
         }
     } catch (PDOException $e) {
