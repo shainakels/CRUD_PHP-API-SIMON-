@@ -59,7 +59,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             return;
         }
         break;
-
+    
     // DELETING SINGLE USER
     case 'DELETE':
         if ($req[0] == 'Delete') {
